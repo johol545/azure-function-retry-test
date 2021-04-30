@@ -7,6 +7,7 @@ Send any message on the que
 ## Expected result
 The function is called a total of 2 (queue Max delivery count) x 4 (1 original attempt + maxRetryCount retries)= 8 times.
 The retry attempts should happen with an exponentially increasing delay after the previous attempt, something like:
+```
 1.0. Original attempt
 1.1. Retry 1: 3 seconds after original attempt
 1.2. Retry 2: 6 seconds after 1.1
@@ -15,16 +16,19 @@ The retry attempts should happen with an exponentially increasing delay after th
 2.1. Retry 1: 3 seconds after 2.0
 2.2. Retry 2: 6 seconds after 2.1
 2.3. Retry 3: 9 seconds after 2.2
+```
 ## Actual result
 The retry attempts are not happening with an exponentially increasing delay after the previous attempt:
+```
 1.0. Original attempt
 1.1. Retry 1: 3 seconds after original attempt
 1.2. Retry 2: 6 seconds after 1.1
-1.3. **Retry 3: immediately after 1.2** :thinking:
+1.3. Retry 3: immediately after 1.2 (!)
 2.0 Second attempt of dequeuing: immediately after 1.3
 2.1. Retry 1: 3 seconds after 2.0
 2.2. Retry 2: 6 seconds after 2.1
-2.3. **Retry 3: immediately after 2.2** :thinking:
+2.3. Retry 3: immediately after 2.2 (!)
+```
 ## Example output
 ```
 [2021-04-30T08:26:06.382Z] Executing 'Functions.ServiceBusQueueTrigger1' (Reason='New ServiceBus message detected on 'retry-test'.', Id=c86b533e-2f89-4bec-9241-835f207c8674)
