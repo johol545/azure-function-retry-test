@@ -3,7 +3,7 @@ Running into this strange behaviour when testing exponentialBackoff retry strate
 ## Prerequisites
 A service bus with default settings with a queue with Max delivery count set to 2
 ## Steps to reproduce
-Send any message on the que
+Send any message on the queue
 ## Expected result
 The function is called a total of 2 (queue Max delivery count) x 4 (1 original attempt + maxRetryCount retries)= 8 times.
 The retry attempts should happen with an exponentially increasing delay after the previous attempt, something like:
